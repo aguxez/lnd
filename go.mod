@@ -207,6 +207,8 @@ replace google.golang.org/protobuf => github.com/lightninglabs/protobuf-go-hex-d
 // Temporary replace until the next version of sqldb is tagged.
 replace github.com/lightningnetwork/lnd/sqldb => ./sqldb
 
+replace github.com/lightningnetwork/lightning-onion => github.com/ellemouton/lightning-onion v1.2.1-0.20240710091635-0990a2b01a8a
+
 // If you change this please also update .github/pull_request_template.md and
 // docs/INSTALL.md.
 go 1.21.4
