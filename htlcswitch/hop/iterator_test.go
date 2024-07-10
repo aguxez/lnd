@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/davecgh/go-spew/spew"
 	sphinx "github.com/lightningnetwork/lightning-onion"
 	"github.com/lightningnetwork/lnd/lnwire"
@@ -206,6 +207,9 @@ func TestParseAndValidateRecipientData(t *testing.T) {
 	// Mocked error.
 	errDecryptFailed := errors.New("could not decrypt")
 
+	nodeKey, err := btcec.NewPrivateKey()
+	require.NoError(t, err)
+
 	tests := []struct {
 		name              string
 		data              []byte
@@ -284,6 +288,11 @@ func TestParseAndValidateRecipientData(t *testing.T) {
 			}
 			iterator := &sphinxHopIterator{
 				blindingKit: kit,
+				router: sphinx.NewRouter(
+					&sphinx.PrivKeyECDH{PrivKey: nodeKey},
+					&chaincfg.TestNet3Params,
+					sphinx.NewMemoryReplayLog(),
+				),
 			}
 
 			_, _, err = parseAndValidateRecipientData(
